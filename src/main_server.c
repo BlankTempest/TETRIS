@@ -6,7 +6,7 @@
 #include "SDL_net.h"
 
 #define MAX_PACKET_SIZE 1024
-#define MAX_INSTANCES 10
+#define MAX_INSTANCES 50
 
 typedef struct {
     TCPsocket client_socket1;
@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
     int port = atoi(argv[1]);
 
     IPaddress ip;
-    char hostname[20] = "127.0.0.1";
     if (SDLNet_ResolveHost(&ip, NULL, port) == -1) {
         printf("SDLNet_ResolveHost failed: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
@@ -102,14 +101,6 @@ int main(int argc, char *argv[]) {
                     }
                     continue;
                 }
-                //printf("%s\n",buffer+bytes_received-1);
-                if(buffer[bytes_received-1]=='9'){
-                    printf("client 2 wins\n");
-                    instance->is_client1_connected = false;
-                    SDLNet_TCP_Close(instance->client_socket1);
-                    instance->is_client2_connected = false;
-                    SDLNet_TCP_Close(instance->client_socket2);
-                }
                 SDLNet_TCP_Send(instance->client_socket2, buffer, bytes_received);
                 //receive message from client 2 and send to client 1
                 bytes_received = SDLNet_TCP_Recv(instance->client_socket2, buffer, MAX_PACKET_SIZE);
@@ -121,14 +112,6 @@ int main(int argc, char *argv[]) {
                         SDLNet_TCP_Send(instance->client_socket1, "Opponent disconnected\n", 22);
                     }
                     continue;
-                }
-                //printf("%s\n",buffer+bytes_received-1);
-                if(buffer[bytes_received-1]=='9'){
-                    printf("client 1 wins\n");
-                    instance->is_client1_connected = false;
-                    SDLNet_TCP_Close(instance->client_socket1);
-                    instance->is_client2_connected = false;
-                    SDLNet_TCP_Close(instance->client_socket2);
                 }
                 SDLNet_TCP_Send(instance->client_socket1, buffer, bytes_received);
             }
