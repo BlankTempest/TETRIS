@@ -71,6 +71,7 @@ void gameover(KeyInputs *Input, long long int *score){
         if (SDL_GetTicks() > time + 1000){
             Input -> menu = 1;
             printf("%d\n",*score);
+            SDLNet_TCP_Send(client, "9", 1);
             return;
         }
     }
