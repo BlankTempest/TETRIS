@@ -3,8 +3,6 @@
 
 #include "defs.h"
 
-extern TCPsocket server;
-extern TCPsocket client;
 extern SDL_mutex *mut;
 
 extern int linesCompleted;

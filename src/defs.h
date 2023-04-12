@@ -8,8 +8,10 @@
 #include <stdlib.h> //random + more
 #include <stdio.h> //to debug and to get err messages
 #include <stdbool.h> //convenience
-#include <SDL_net.h>
 #include <SDL_thread.h>
+#include <winsock2.h>
+
+#pragma comment(lib, "ws2_32.lib")
 
 /*this is what stdbool does kek
 #define true 1

@@ -70,7 +70,20 @@ void gameover(KeyInputs *Input, long long int *score){
     while(true){
         if (SDL_GetTicks() > time + 1000){
             Input -> menu = 1;
-            printf("%d\n",*score);
+            
+            int iResult;
+
+            iResult = send(clientSocket, "9", 1, 0);
+            if (iResult == SOCKET_ERROR) {
+                printf("Unable to send data to server: %ld\n", WSAGetLastError());
+                closesocket(clientSocket);
+                WSACleanup();
+                exit(1);
+            }
+            printf("Opponent wins\n","9");
+
+            printf("Score is %d\n",*score);
+
             return;
         }
     }

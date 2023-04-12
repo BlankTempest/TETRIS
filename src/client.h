@@ -5,9 +5,7 @@
 
 extern int linesCompleted;
 extern int linesToAdd;
-
-extern TCPsocket client;
-extern TCPsocket server;
+extern SOCKET clientSocket;
 extern SDL_mutex *mut;
 
 int clientSideThread();

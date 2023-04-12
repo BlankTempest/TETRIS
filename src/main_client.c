@@ -10,8 +10,8 @@
 int linesCompleted = 0;
 int linesToAdd = 0;
 
-TCPsocket client;
 SDL_mutex *mut;
+SOCKET clientSocket;
 
 int main(int argc, char* args[]) {
 
@@ -19,11 +19,6 @@ int main(int argc, char* args[]) {
     srand(time(NULL));
     
     initializeSdlElements();
-
-    if(SDLNet_Init() < 0) {
-        printf("Error: SDLNet failed to initialize: '%s'\n", SDLNet_GetError());
-        exit(1);
-    }
 
     bool quitCheck = false;
     bool running = true;
@@ -48,10 +43,13 @@ int main(int argc, char* args[]) {
             quitCheck = gameplay(board);
         }
     }
-    //net exit
-    SDLNet_TCP_Close(client);
+
+    // Cleanup
+    closesocket(clientSocket);
+    WSACleanup();
+
+
     SDL_DetachThread(clientThread);
-    SDLNet_Quit();
 
     //exit
     Mix_FreeMusic(bgsound);

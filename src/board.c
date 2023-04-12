@@ -256,14 +256,24 @@ int dropCheck(int (*board)[COLS][5], Piece *P1, long long int *score, int next_p
     }
 
 
-    if (client) {
+    if (clientSocket && linesCompleted) {
         //send data
         char sendLines[1];
+        int iResult;
 
         //printf("Client completed %d lines\n", linesCompleted);
         //sprintf(sendLines, "%d", linesCompleted);
         itoa (linesCompleted, sendLines, 10);
-        SDLNet_TCP_Send(client, sendLines, 1);
+
+        iResult = send(clientSocket, sendLines, (int)strlen(sendLines), 0);
+        if (iResult == SOCKET_ERROR) {
+            printf("Unable to send data to server: %ld\n", WSAGetLastError());
+            closesocket(clientSocket);
+            WSACleanup();
+            exit(1);
+        }
+        printf("Sent %s lines to server\n",sendLines);
+
         linesCompleted = 0; 
     }
 

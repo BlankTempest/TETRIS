@@ -6,7 +6,7 @@
 
 extern int linesCompleted;
 extern int linesToAdd;
-extern TCPsocket client;
+extern SOCKET clientSocket;
 extern SDL_mutex *mut;
 
 bool collisionCheck(const int (*board)[COLS][5], const Piece *P1);
